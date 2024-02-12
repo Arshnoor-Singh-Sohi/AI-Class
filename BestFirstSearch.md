@@ -1,125 +1,130 @@
-Certainly! Let's break down the Java code implementing the Best-First Search (BFS) algorithm on a tree using the A* (A-star) algorithm. I'll provide a step-by-step explanation:
+Certainly! Let's break down the provided Java code step by step:
 
+### 1. Class Definition: `GFG`
 ```java
-import java.util.*;
+public class GFG {
+```
+This is the main class named `GFG`. It contains the implementation of Best-First Search using a priority queue.
 
-// Node structure for the tree
-class TreeNode implements Comparable<TreeNode> {
-    int value;              // Value of the node
-    int heuristic;          // Heuristic value for A* algorithm
-    List<TreeNode> children; // List of children nodes
+### 2. Static Member: `adj`
+```java
+    static ArrayList<ArrayList<edge>> adj = new ArrayList<>();
+```
+- `adj` is a static member of the `GFG` class.
+- It is an `ArrayList` of `ArrayList`s of the generic type `edge`.
+- This will be used to represent the adjacency list of the graph.
 
-    // Constructor to initialize the node
-    public TreeNode(int value, int heuristic) {
-        this.value = value;
-        this.heuristic = heuristic;
-        this.children = new ArrayList<>();
+### 3. Static Nested Class: `edge`
+```java
+    static class edge implements Comparable<edge> {
+        int v, cost;
+
+        edge(int v, int cost) {
+            this.v = v;
+            this.cost = cost;
+        }
+
+        @Override
+        public int compareTo(edge o) {
+            if (o.cost < cost) {
+                return 1;
+            } else {
+                return -1;
+            }
+        }
     }
+```
+- `edge` is a nested class within `GFG`.
+- It represents an edge in the graph.
+- Implements `Comparable` to enable sorting of edges based on their cost.
 
-    // Comparable interface implementation to compare nodes based on the total cost
-    @Override
-    public int compareTo(TreeNode other) {
-        return Integer.compare(this.value + this.heuristic, other.value + other.heuristic);
+### 4. Constructor: `GFG(int v)`
+```java
+    public GFG(int v) {
+        for (int i = 0; i < v; i++) {
+            adj.add(new ArrayList<>());
+        }
     }
-}
+```
+- Constructor initializes the adjacency list (`adj`) with empty ArrayLists for each vertex.
+- The parameter `v` represents the number of vertices in the graph.
 
-// Main class for the Best-First Search on a tree
-public class BestFirstSearchTree {
+### 5. Method: `best_first_search(int source, int target, int v)`
+```java
+    static void best_first_search(int source, int target, int v) {
+        PriorityQueue<edge> pq = new PriorityQueue<>();
+        boolean[] visited = new boolean[v];
+        visited[source] = true;
+        pq.add(new edge(source, -1));
+        
+        while (!pq.isEmpty()) {
+            int x = pq.poll().v;
+            System.out.print(x + " ");
 
-    // Constant representing infinity for unreachable goals
-    static final int INF = Integer.MAX_VALUE;
-
-    // Best-First Search algorithm method
-    public static int bestFirstSearch(TreeNode root, int goalValue) {
-        PriorityQueue<TreeNode> priorityQueue = new PriorityQueue<>();
-        boolean[] visited = new boolean[1000]; // Assuming a maximum of 1000 nodes
-
-        priorityQueue.offer(root);
-
-        while (!priorityQueue.isEmpty()) {
-            TreeNode current = priorityQueue.poll();
-
-            if (current.value == goalValue) {
-                return current.value; // Goal reached
+            if (target == x) {
+                break;
             }
 
-            if (!visited[current.value]) {
-                visited[current.value] = true;
-
-                for (TreeNode child : current.children) {
-                    if (!visited[child.value]) {
-                        priorityQueue.offer(child);
-                    }
+            for (edge adjacentNodeEdge : adj.get(x)) {
+                if (!visited[adjacentNodeEdge.v]) {
+                    visited[adjacentNodeEdge.v] = true;
+                    pq.add(adjacentNodeEdge);
                 }
             }
         }
-
-        return INF; // Goal not reachable
     }
-
-    // Main method
-    public static void main(String[] args) {
-        // Example Tree:
-        //        5
-        //       / \
-        //      3   8
-        //     / \   \
-        //    1   4   10
-
-        // Creating the tree structure
-        TreeNode root = new TreeNode(5, heuristic(5, 10));
-        root.children.add(new TreeNode(3, heuristic(3, 10)));
-        root.children.add(new TreeNode(8, heuristic(8, 10)));
-        root.children.get(0).children.add(new TreeNode(1, heuristic(1, 10)));
-        root.children.get(0).children.add(new TreeNode(4, heuristic(4, 10)));
-        root.children.get(1).children.add(new TreeNode(10, heuristic(10, 10)));
-
-        int goalValue = 10;
-
-        // Performing Best-First Search
-        int result = bestFirstSearch(root, goalValue);
-
-        // Printing the result
-        if (result != INF) {
-            System.out.println("Goal reached with value: " + result);
-        } else {
-            System.out.println("Goal not reachable.");
-        }
-    }
-
-    // Heuristic function: Simple absolute difference between current and goal values
-    private static int heuristic(int currentValue, int goalValue) {
-        return Math.abs(currentValue - goalValue);
-    }
-}
 ```
+- `best_first_search` method performs the Best-First Search algorithm.
+- It uses a `PriorityQueue` (`pq`) to keep track of nodes in a priority order based on their cost.
+- `visited` array is used to mark visited nodes.
+- The algorithm starts from the `source` node and explores adjacent nodes based on their cost.
+- The goal is to reach the `target` node while minimizing the cost.
 
-**Explanation:**
+### 6. Method: `addedge(int u, int v, int cost)`
+```java
+    void addedge(int u, int v, int cost) {
+        adj.get(u).add(new edge(v, cost));
+        adj.get(v).add(new edge(u, cost));
+    }
+```
+- `addedge` method adds an edge to the graph.
+- It adds an edge between vertices `u` and `v` with a specified cost.
 
-1. **TreeNode Class:**
-   - Represents a node in the tree.
-   - Each node has a `value` (data), a `heuristic` value (for A* algorithm), and a list of `children` nodes.
+### 7. Main Method: `public static void main(String args[])`
+```java
+    public static void main(String args[]) {
+        int v = 14;
+        GFG graph = new GFG(v);
+        // ... (see next point)
+        int source = 0;
+        int target = 9;
+        best_first_search(source, target, v);
+    }
+```
+- The `main` method is the entry point of the program.
+- It creates an instance of `GFG` representing a graph with 14 vertices.
+- Edges are added to the graph using the `addedge` method.
+- The Best-First Search is invoked with a specified `source` and `target` node.
 
-2. **BestFirstSearchTree Class:**
-   - **`bestFirstSearch` Method:**
-     - Performs Best-First Search starting from the `root` node.
-     - Utilizes a `PriorityQueue` to prioritize nodes based on their total cost (actual value + heuristic).
-     - Uses a boolean array `visited` to keep track of visited nodes.
-     - Returns the value of the node if the goal is reached, or `INF` (infinity) if the goal is not reachable.
+### 8. Graph Definition in `main` method
+```java
+        graph.addedge(0, 1, 3);
+        // ... (addition of other edges)
+        graph.addedge(9, 13, 2);
+```
+- Edges are added to the graph using the `addedge` method.
+- This section defines the graph structure based on the provided edges.
 
-   - **`main` Method:**
-     - Creates an example tree.
-     - Calls `bestFirstSearch` with the root node and a goal value.
-     - Prints the result indicating whether the goal is reached or not.
+### 9. Function Call: `best_first_search(source, target, v);`
+```java
+        int source = 0;
+        int target = 9;
+        best_first_search(source, target, v);
+```
+- The `best_first_search` method is called with the specified `source`, `target`, and the number of vertices (`v`).
 
-   - **`heuristic` Method:**
-     - Simple heuristic function that calculates the absolute difference between the current and goal values.
+### 10. Conclusion
+- The code implements Best-First Search using a priority queue on a graph represented by an adjacency list.
+- The algorithm aims to find the lowest cost path from the source to the target vertex.
 
-3. **Example Tree:**
-   - Represents a tree with nodes 5, 3, 8, 1, 4, and 10 arranged in a hierarchical structure.
-   - Goal value is set to 10.
-
-4. **Result Printing:**
-   - Prints whether the goal is reached with a specific value or if it's not reachable.
-
-Overall, this code demonstrates a simplified A* algorithm on a tree structure, where nodes are prioritized based on a combination of their actual value and a heuristic estimate. The example tree is traversed in a best-first manner to find the goal value.
+Please note that the implementation assumes an undirected graph with weighted edges. The goal of the Best-First Search is to find the path with the lowest cost from the source to the target node.
