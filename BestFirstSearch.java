@@ -25,7 +25,7 @@ public class BestFirstSearch {
         }
     }
 
-    public GFG(int v) {
+    public BestFirstSearch(int v) {
         for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<>());
         }
@@ -72,20 +72,30 @@ public class BestFirstSearch {
 
         // The nodes shown in the above example (by alphabets) are
         // implemented using integers addedge(x,y,cost);
-        GFG graph = new GFG(v);
-        graph.addedge(0, 1, 3);
-        graph.addedge(0, 2, 6);
-        graph.addedge(0, 3, 5);
-        graph.addedge(1, 4, 9);
-        graph.addedge(1, 5, 8);
-        graph.addedge(2, 6, 12);
-        graph.addedge(2, 7, 14);
-        graph.addedge(3, 8, 7);
-        graph.addedge(8, 9, 5);
-        graph.addedge(8, 10, 6);
-        graph.addedge(9, 11, 1);
-        graph.addedge(9, 12, 10);
-        graph.addedge(9, 13, 2);
+        BestFirstSearch graph = new BestFirstSearch(v);
+        // graph.addedge(0, 1, 3);
+        // graph.addedge(0, 2, 6);
+        // graph.addedge(0, 3, 5);
+        // graph.addedge(1, 4, 9);
+        // graph.addedge(1, 5, 8);
+        // graph.addedge(2, 6, 12);
+        // graph.addedge(2, 7, 14);
+        // graph.addedge(3, 8, 7);
+        // graph.addedge(8, 9, 5);
+        // graph.addedge(8, 10, 6);
+        // graph.addedge(9, 11, 1);
+        // graph.addedge(9, 12, 10);
+        // graph.addedge(9, 13, 2);
+
+        graph.addedge(0, 1, 12);
+        graph.addedge(0, 2, 4);
+        graph.addedge(1, 3, 7);
+        graph.addedge(1, 4, 3);
+        graph.addedge(2, 5, 8);
+        graph.addedge(2, 6, 2);
+        graph.addedge(5, 7, 4);
+        graph.addedge(6, 8, 9);
+        graph.addedge(6, 9, 0);
 
         int source = 0;
         int target = 9;

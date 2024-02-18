@@ -1,16 +1,16 @@
 Certainly! Let's break down the provided Java code step by step:
 
-### 1. Class Definition: `GFG`
+### 1. Class Definition: `BestFirstSearch`
 ```java
-public class GFG {
+public class BestFirstSearch {
 ```
-This is the main class named `GFG`. It contains the implementation of Best-First Search using a priority queue.
+This is the main class named `BestFirstSearch`. It contains the implementation of Best-First Search using a priority queue.
 
 ### 2. Static Member: `adj`
 ```java
     static ArrayList<ArrayList<edge>> adj = new ArrayList<>();
 ```
-- `adj` is a static member of the `GFG` class.
+- `adj` is a static member of the `BestFirstSearch` class.
 - It is an `ArrayList` of `ArrayList`s of the generic type `edge`.
 - This will be used to represent the adjacency list of the graph.
 
@@ -34,13 +34,13 @@ This is the main class named `GFG`. It contains the implementation of Best-First
         }
     }
 ```
-- `edge` is a nested class within `GFG`.
+- `edge` is a nested class within `BestFirstSearch`.
 - It represents an edge in the graph.
 - Implements `Comparable` to enable sorting of edges based on their cost.
 
-### 4. Constructor: `GFG(int v)`
+### 4. Constructor: `BestFirstSearch(int v)`
 ```java
-    public GFG(int v) {
+    public BestFirstSearch(int v) {
         for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<>());
         }
